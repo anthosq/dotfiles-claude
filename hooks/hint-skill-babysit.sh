@@ -22,7 +22,7 @@ HINT_CACHE_DIR=/tmp/claude-${UID}-state/babysit-skill-hint
 SKILL_CACHE="$SKILL_CACHE_DIR/$SID"
 HINT_CACHE="$HINT_CACHE_DIR/$SID"
 
-mkdir -p -m 700 "$SKILL_CACHE_DIR" "$HINT_CACHE_DIR"
+mkdir -p "$SKILL_CACHE_DIR" "$HINT_CACHE_DIR"
 reset_on_compact "$SID" "$SKILL_CACHE_DIR" "$SKILL_CACHE"
 reset_on_compact "$SID" "$HINT_CACHE_DIR" "$HINT_CACHE"
 

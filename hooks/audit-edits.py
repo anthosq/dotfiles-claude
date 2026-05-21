@@ -20,7 +20,6 @@ Always exits 0 from the hook subcommand — never blocks a tool call.
 
 import argparse
 import calendar
-import fcntl
 import io
 import json
 import os
@@ -28,6 +27,15 @@ import re
 import signal
 import stat as stat_mod
 import subprocess
+import tempfile
+
+try:
+    import fcntl as _fcntl_mod
+    def _flock_ex(f):
+        _fcntl_mod.flock(f, _fcntl_mod.LOCK_EX)
+except ImportError:
+    def _flock_ex(f):  # Windows: no-op (sessions are serial)
+        pass
 import sys
 import time
 import difflib
@@ -37,7 +45,12 @@ from pathlib import Path
 if hasattr(signal, "SIGPIPE"):
     signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
-AUDIT_DIR = Path(f"/tmp/claude-{os.getuid()}-state/audit")
+def _user_id() -> str:
+    if hasattr(os, "getuid"):
+        return str(os.getuid())
+    return os.getenv("USERNAME", os.getenv("USER", "user"))
+
+AUDIT_DIR = Path(tempfile.gettempdir()) / f"claude-{_user_id()}-state" / "audit"
 MAX_SNAPSHOT_BYTES = 5 * 1024 * 1024  # skip files larger than 5 MB
 BINARY_SENTINEL = "\0BINARY\0"
 TOOLBIG_SENTINEL = "\0TOOBIG\0"
@@ -45,7 +58,8 @@ CODEX_PROMPT_FILE = Path(__file__).parent / "audit-fresh-eye-codex.md"
 
 
 def should_skip_audit_path(abs_path: str, cwd: str) -> bool:
-    if abs_path.startswith("/tmp/"):
+    _tmp = tempfile.gettempdir()
+    if abs_path.startswith("/tmp/") or abs_path.lower().startswith(_tmp.lower() + os.sep):
         return True
     if abs_path.startswith(str(AUDIT_DIR)):
         return True
@@ -96,7 +110,7 @@ def with_session_locked(sid: str, mutate):
     target = session_file(sid)
     lock_path = AUDIT_DIR / f"{sid}.lock"
     with open(lock_path, "w") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+        _flock_ex(lock)
         if target.exists():
             try:
                 data = json.loads(target.read_text())

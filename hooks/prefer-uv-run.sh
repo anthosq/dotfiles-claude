@@ -13,7 +13,7 @@ if [ -n "${VIRTUAL_ENV:-}" ] || [ -n "${CONDA_PREFIX:-}" ]; then
 fi
 
 # Skip if command already uses uv run
-if echo "$command" | grep -qP '\buv\s+run\b'; then
+if echo "$command" | grep -qE '(^|[^[:alnum:]_])uv[[:space:]]+run([^[:alnum:]_]|$)'; then
     exit 0
 fi
 
@@ -23,12 +23,12 @@ if ! command -v uv >/dev/null 2>&1; then
 fi
 
 # Detect bare python3/python at command position
-if ! echo "$command" | grep -qP '(^|&&|;|\|)\s*python3?\s'; then
+if ! echo "$command" | grep -qE '(^|&&|;|\|)[[:space:]]*python3?[[:space:]]'; then
     exit 0
 fi
 
 # Skip common legitimate bare-python uses
-if echo "$command" | grep -qP 'python3?\s+(-V|--version|--help|-c\s)'; then
+if echo "$command" | grep -qE 'python3?[[:space:]]+(-V|--version|--help|-c[[:space:]])'; then
     exit 0
 fi
 

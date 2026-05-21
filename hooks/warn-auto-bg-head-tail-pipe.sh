@@ -8,7 +8,7 @@ set -euo pipefail
 input=$(cat)
 
 # Auto-backgrounded only — backgroundTaskId set in tool_response
-bg_id=$(jq -r '.tool_response.backgroundTaskId // empty' <<< "$input")
+bg_id=$(jq -r 'if (.tool_response | type) == "object" then .tool_response.backgroundTaskId // empty else empty end' <<< "$input")
 [ -n "$bg_id" ] || exit 0
 
 # Skip explicit run_in_background — PreToolUse hook owns that case

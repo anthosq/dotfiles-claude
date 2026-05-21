@@ -140,7 +140,7 @@ fi
 #     last one for this session, regardless of which metrics tripped. ---
 CACHE_DIR=/tmp/claude-${UID}-state/system-load
 CACHE_FILE="${CACHE_DIR}/${SID}"
-mkdir -p -m 700 "$CACHE_DIR"
+mkdir -p "$CACHE_DIR"
 NOW=$(date +%s)
 if [ -f "$CACHE_FILE" ]; then
   LAST=$(cat "$CACHE_FILE" 2>/dev/null || echo 0)

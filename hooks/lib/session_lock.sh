@@ -47,7 +47,7 @@ reset_on_compact() {
     fi
     if [ "$current_gen" -gt "$prev_gen" ]; then
         rm -f "$@"
-        mkdir -p -m 700 "$cache_dir"
+        mkdir -p "$cache_dir"
         echo "$current_gen" > "$gen_seen"
     fi
 }

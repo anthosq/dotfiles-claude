@@ -38,6 +38,6 @@ case "$TOOL" in
 esac
 
 if [ "$RESET" = "1" ]; then
-  mkdir -p -m 700 "$STATE_DIR"
+  mkdir -p "$STATE_DIR"
   echo 0 > "$STATE_DIR/$SID"
 fi

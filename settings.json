@@ -10,24 +10,20 @@
     "CLAUDE_CODE_ENABLE_EXPERIMENTAL_ADVISOR_TOOL": "1",
     "CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING": "1",
     "CLAUDE_CODE_BASH_SANDBOX_SHOW_INDICATOR": "1",
-    "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
+"CLAUDE_CODE_NO_FLICKER": "1",
     "BASH_MAX_OUTPUT_LENGTH": "10000",
     "BASH_MAX_TIMEOUT_MS": "240000",
     "CLAUDE_AUTO_BACKGROUND_TASKS": "1",
     "CLAUDE_CODE_NEW_INIT": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "AUDIT_BACKEND": "codex",
-    "AUDIT_CODEX_MODEL": "gpt-5.4",
-    "AUDIT_CODEX_EFFORT": "medium",
-    "AUDIT_CLAUDE_MODEL": "haiku",
+    "AUDIT_BACKEND": "claude",
+    "AUDIT_CLAUDE_MODEL": "claude-opus-4-6",
     "AUDIT_CLAUDE_EFFORT": "high",
     "CAVEMAN_DEFAULT_MODE": "ultra"
   },
   "permissions": {
     "defaultMode": "bypassPermissions",
-    "additionalDirectories": [
-      "/tmp"
-    ]
+    "additionalDirectories": []
   },
   "enableAllProjectMcpServers": true,
   "skillOverrides": {
@@ -227,7 +223,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/audit-edits.py hook",
+            "command": "uv run ~/.claude/hooks/audit-edits.py hook",
             "timeout": 5
           }
         ]
@@ -390,7 +386,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/audit-edits.py stop-hook",
+            "command": "uv run ~/.claude/hooks/audit-edits.py stop-hook",
             "timeout": 300,
             "asyncRewake": true
           }
@@ -444,19 +440,14 @@
   "worktree": {
     "baseRef": "head"
   },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh",
-    "refreshInterval": 5
-  },
-  "enabledPlugins": {
+"enabledPlugins": {
     "pyright-lsp@claude-plugins-official": false,
     "context7@claude-plugins-official": false,
     "clangd-lsp@claude-plugins-official": false,
     "claude-hud@claude-hud": false,
     "code-simplifier@claude-plugins-official": false,
     "claude-md-management@claude-plugins-official": false,
-    "codex@openai-codex": true,
+    "codex@openai-codex": false,
     "plugin-dev@claude-plugins-official": false,
     "code-review@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": false,

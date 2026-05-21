@@ -10,7 +10,7 @@ case "$skill" in *babysit*) ;; *) exit 0 ;; esac
 
 SID=$(jq -r '.session_id // "unknown"' <<< "$input")
 SKILL_CACHE_DIR=/tmp/claude-${UID}-state/babysit-skill-loaded
-mkdir -p -m 700 "$SKILL_CACHE_DIR"
+mkdir -p "$SKILL_CACHE_DIR"
 
 COMPACT_GEN="/tmp/claude-${UID}-state/compact-events/$SID.gen"
 if [ -f "$COMPACT_GEN" ]; then

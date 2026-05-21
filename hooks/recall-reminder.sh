@@ -18,7 +18,7 @@ set -euo pipefail
 
 RECALL_INTERVAL="${RECALL_REMINDER_INTERVAL:-9}"
 STATE_DIR="/tmp/claude-${UID}-state/recall-reminder"
-mkdir -p -m 700 "$STATE_DIR"
+mkdir -p "$STATE_DIR"
 
 PAYLOAD=""
 if ! [ -t 0 ]; then

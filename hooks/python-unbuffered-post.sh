@@ -7,7 +7,7 @@ set -euo pipefail
 input=$(cat)
 
 # Only fire when command was backgrounded (explicit or auto)
-bg_id=$(echo "$input" | jq -r '.tool_response.backgroundTaskId // empty')
+bg_id=$(echo "$input" | jq -r 'if (.tool_response | type) == "object" then .tool_response.backgroundTaskId // empty else empty end')
 [ -n "$bg_id" ] || exit 0
 
 # Skip if it was explicit run_in_background (already caught by PreToolUse)

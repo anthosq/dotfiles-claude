@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+source "$(dirname "$0")/pcre-compat.sh"
 # Shared helper: check if a command invokes python (directly or via just)
 # and whether PYTHONUNBUFFERED/​-u is set.
 #

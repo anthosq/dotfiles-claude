@@ -25,7 +25,7 @@ case "$SID" in agent-*) exit 0 ;; esac
 
 CACHE_DIR=/tmp/claude-${UID}-state/skill-hint-jina-ai
 CACHE="$CACHE_DIR/$SID"
-mkdir -p -m 700 "$CACHE_DIR"
+mkdir -p "$CACHE_DIR"
 reset_on_compact "$SID" "$CACHE_DIR" "$CACHE"
 [ -f "$CACHE" ] && exit 0
 touch "$CACHE"

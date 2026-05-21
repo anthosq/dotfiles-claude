@@ -28,7 +28,7 @@ SID=$(jq -r '.session_id // empty' <<< "$input")
 # them; main agent gets the hint via its own counter.
 case "$SID" in agent-*) exit 0 ;; esac
 
-mkdir -p -m 700 "$CACHE_DIR"
+mkdir -p "$CACHE_DIR"
 COUNTER="$CACHE_DIR/$SID.counter"
 FIRED="$CACHE_DIR/$SID.fired"
 

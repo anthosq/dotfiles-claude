@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 set -euo pipefail
 
+source "$(dirname "$0")/lib/pcre-compat.sh"
 source "$(dirname "$0")/lib/bypass.sh"
 source "$(dirname "$0")/lib/emit.sh"
 source "$(dirname "$0")/lib/read_input.sh"

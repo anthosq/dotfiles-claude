@@ -45,6 +45,8 @@
 # e.g. `grep 'foo|bash -c rm' file` — the regex sees `|bash -c rm` as a
 # pipe-into-wrapper. Bypass marker is the documented escape — see lib/README.md.
 
+source "$(dirname "${BASH_SOURCE[0]}")/pcre-compat.sh"
+
 CMD_ANCHOR_BASIC='(^|&&|;|\||\(|\{)\s*((do|then|else)\s+)?'
 # CMD_ANCHOR_SUDO accepts an optional `sudo` invocation including any sudo
 # flags. With-arg short opts (-C -D -g -h -p -r -t -T -u -U) consume their

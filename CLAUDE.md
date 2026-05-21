@@ -4,7 +4,7 @@
 
 CLI tools:
 
-- `rg` not `grep` · `fd` not `find` · `exa` not `ls` · `sd` not `sed`
+- `rg` not `grep` · `fd` not `find` · `eza` not `ls` · `sd` not `sed`
 - `just` not `make` · `uv` not `pip` · `uv run` not `python3` · `pnpm` not `npm`
 - `sqlite3` · `hyperfine` · `rsync` · `gh`
 

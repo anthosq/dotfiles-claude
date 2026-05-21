@@ -10,7 +10,7 @@ input=$(cat)
 
 # Detect background: explicit flag or auto-backgrounded via timeout
 run_in_bg=$(echo "$input" | jq -r '.tool_input.run_in_background // false')
-bg_id=$(echo "$input" | jq -r '.tool_response.backgroundTaskId // empty')
+bg_id=$(echo "$input" | jq -r 'if (.tool_response | type) == "object" then .tool_response.backgroundTaskId // empty else empty end')
 
 if [ "$run_in_bg" != "true" ] && [ -z "$bg_id" ]; then
     exit 0
