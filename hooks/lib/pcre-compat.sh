@@ -45,7 +45,7 @@ if ! command grep -qP 'x' <<< 'x' 2>/dev/null; then
         # Delegate to perl via env var (avoids escaping issues)
         if $quiet; then
             PCRE_PAT="$pattern" perl -ne \
-                'exit 0 if /$ENV{PCRE_PAT}/; END { exit 1 }' \
+                'BEGIN{$r=1} if(/$ENV{PCRE_PAT}/){$r=0;exit} END{exit $r}' \
                 ${files[@]+"${files[@]}"}
         elif $only_matching; then
             PCRE_PAT="$pattern" perl -ne \
