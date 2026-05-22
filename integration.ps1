@@ -14,15 +14,15 @@ function claude {
     Claude Code wrapper: sets session ID, bash path, and PYTHONUNBUFFERED.
     #>
     if (-not $script:_claudeExe) {
-        Write-Error "claude not found in PATH. Install Claude Code first."
-        return 1
+        Write-Error "claude not found in PATH. Install Claude Code first." -ErrorAction Stop
+        return
     }
     $session = "$(Split-Path $PWD -Leaf)-$('{0:x8}{1:x8}' -f (Get-Random), (Get-Random))"
     $bashCmd  = Get-Command bash -CommandType Application -ErrorAction SilentlyContinue
 
     $prev = @{
-        SHELL                = $env:SHELL
-        PYTHONUNBUFFERED     = $env:PYTHONUNBUFFERED
+        SHELL                 = $env:SHELL
+        PYTHONUNBUFFERED      = $env:PYTHONUNBUFFERED
         AGENT_BROWSER_SESSION = $env:AGENT_BROWSER_SESSION
     }
     $env:SHELL                 = if ($bashCmd) { $bashCmd.Source } else { $env:SHELL }
@@ -54,20 +54,20 @@ function commit {
     param([Parameter(ValueFromRemainingArguments)][string[]]$Note)
 
     if (-not $script:_claudeExe) {
-        Write-Error "claude not found in PATH."
-        return 1
+        Write-Error "claude not found in PATH." -ErrorAction Stop
+        return
     }
 
     $extra  = if ($Note) { " Additional user note to help you understand: $($Note -join ' ')" } else { "" }
     $prompt = "Make a git commit with commit message briefly describing what changed in the codebase. Stage and commit all changed files (including untracked ones). If some stagable files looks like should appear in .gitignore, add the file name pattern to .gitignore before stage. Do not edit files in this conversation.$extra"
 
     $prev = @{
-        CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT      = $env:CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT
-        CLAUDE_CODE_DISABLE_POLICY_SKILLS     = $env:CLAUDE_CODE_DISABLE_POLICY_SKILLS
-        CLAUDE_CODE_DISABLE_AUTO_MEMORY       = $env:CLAUDE_CODE_DISABLE_AUTO_MEMORY
-        ENABLE_CLAUDEAI_MCP_SERVERS           = $env:ENABLE_CLAUDEAI_MCP_SERVERS
+        CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT         = $env:CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT
+        CLAUDE_CODE_DISABLE_POLICY_SKILLS        = $env:CLAUDE_CODE_DISABLE_POLICY_SKILLS
+        CLAUDE_CODE_DISABLE_AUTO_MEMORY          = $env:CLAUDE_CODE_DISABLE_AUTO_MEMORY
+        ENABLE_CLAUDEAI_MCP_SERVERS              = $env:ENABLE_CLAUDEAI_MCP_SERVERS
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = $env:CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
-        AUDIT_BACKEND                         = $env:AUDIT_BACKEND
+        AUDIT_BACKEND                            = $env:AUDIT_BACKEND
     }
     $env:CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT         = "1"
     $env:CLAUDE_CODE_DISABLE_POLICY_SKILLS        = "1"
@@ -79,6 +79,12 @@ function commit {
     try {
         & $script:_claudeExe -p --model haiku --max-turns 50 $prompt
     } finally {
-        foreach ($k in $prev.Keys) { Set-Item "env:$k" $prev[$k] }
+        # Use direct assignment (same as claude()) so $null restores to unset, not ""
+        $env:CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT         = $prev.CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT
+        $env:CLAUDE_CODE_DISABLE_POLICY_SKILLS        = $prev.CLAUDE_CODE_DISABLE_POLICY_SKILLS
+        $env:CLAUDE_CODE_DISABLE_AUTO_MEMORY          = $prev.CLAUDE_CODE_DISABLE_AUTO_MEMORY
+        $env:ENABLE_CLAUDEAI_MCP_SERVERS              = $prev.ENABLE_CLAUDEAI_MCP_SERVERS
+        $env:CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = $prev.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+        $env:AUDIT_BACKEND                            = $prev.AUDIT_BACKEND
     }
 }

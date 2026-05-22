@@ -59,8 +59,15 @@ CODEX_PROMPT_FILE = Path(__file__).parent / "audit-fresh-eye-codex.md"
 
 def should_skip_audit_path(abs_path: str, cwd: str) -> bool:
     _tmp = tempfile.gettempdir()
-    if abs_path.startswith("/tmp/") or abs_path.lower().startswith(_tmp.lower() + os.sep):
-        return True
+    # Normalize both sides so MSYS2 forward-slash paths match Windows tempdir
+    try:
+        abs_norm = str(Path(abs_path).resolve())
+        tmp_norm = str(Path(_tmp).resolve())
+        if abs_norm.lower().startswith(tmp_norm.lower()):
+            return True
+    except OSError:
+        if abs_path.startswith("/tmp/") or abs_path.lower().startswith(_tmp.lower() + os.sep):
+            return True
     if abs_path.startswith(str(AUDIT_DIR)):
         return True
     try:

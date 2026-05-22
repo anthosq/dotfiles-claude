@@ -47,6 +47,7 @@ case "$SID" in agent-*) exit 0 ;; esac
 CACHE_DIR=/tmp/claude-${UID}-state/hint-agent-claude-code-guide
 CACHE="$CACHE_DIR/$SID"
 mkdir -p "$CACHE_DIR"
+chmod 700 "$CACHE_DIR" 2>/dev/null || true
 reset_on_compact "$SID" "$CACHE_DIR" "$CACHE"
 [ -f "$CACHE" ] && exit 0
 touch "$CACHE"

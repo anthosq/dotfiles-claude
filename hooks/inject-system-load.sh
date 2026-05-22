@@ -141,6 +141,7 @@ fi
 CACHE_DIR=/tmp/claude-${UID}-state/system-load
 CACHE_FILE="${CACHE_DIR}/${SID}"
 mkdir -p "$CACHE_DIR"
+chmod 700 "$CACHE_DIR" 2>/dev/null || true
 NOW=$(date +%s)
 if [ -f "$CACHE_FILE" ]; then
   LAST=$(cat "$CACHE_FILE" 2>/dev/null || echo 0)

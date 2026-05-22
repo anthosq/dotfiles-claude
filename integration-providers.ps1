@@ -32,6 +32,7 @@ function Invoke-ClaudeWith {
 
     if (-not $token) {
         Write-Warning "No API key set for provider '$Provider' — check the env var listed in integration-providers.ps1."
+        return
     }
 
     $settingsPath = "$env:USERPROFILE\.claude\providers\$Provider.json"

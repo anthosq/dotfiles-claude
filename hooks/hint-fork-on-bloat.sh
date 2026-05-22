@@ -29,6 +29,7 @@ SID=$(jq -r '.session_id // empty' <<< "$input")
 case "$SID" in agent-*) exit 0 ;; esac
 
 mkdir -p "$CACHE_DIR"
+chmod 700 "$CACHE_DIR" 2>/dev/null || true
 COUNTER="$CACHE_DIR/$SID.counter"
 FIRED="$CACHE_DIR/$SID.fired"
 

@@ -13,6 +13,7 @@ esac
 SID=$(jq -r '.session_id // "unknown"' <<< "$input")
 NOTES_DIR=/tmp/claude-${UID}-state/notes
 mkdir -p "$NOTES_DIR"
+chmod 700 "$NOTES_DIR" 2>/dev/null || true
 NOTES_FILE="$NOTES_DIR/$SID"
 
 if [ "$prompt" = "/note" ]; then

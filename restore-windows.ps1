@@ -75,6 +75,13 @@ if (Test-Path "$backupDir\.fresh-install") {
         Write-Host "Aborted." -ForegroundColor Yellow
         exit 0
     }
+    # Safety snapshot before destructive remove (mirrors section 4 behaviour)
+    $safeTs2  = Get-Date -Format "yyyyMMdd-HHmmss"
+    $safeDst2 = "$backupRoot\pre-restore-$safeTs2"
+    if (Test-Path $TARGET) {
+        Copy-Item $TARGET $safeDst2 -Recurse -Force
+        ok "Safety snapshot -> $safeDst2"
+    }
     Remove-Item $TARGET -Recurse -Force
     ok "Removed ~/.claude (restored to pre-install state)"
     Write-Host "`nRestore complete.`n" -ForegroundColor Green

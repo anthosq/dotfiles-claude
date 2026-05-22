@@ -39,5 +39,6 @@ esac
 
 if [ "$RESET" = "1" ]; then
   mkdir -p "$STATE_DIR"
+  chmod 700 "$STATE_DIR" 2>/dev/null || true
   echo 0 > "$STATE_DIR/$SID"
 fi

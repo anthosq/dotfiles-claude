@@ -32,6 +32,7 @@ fi
 CACHE_DIR=/tmp/claude-${UID}-state/git-status
 CACHE_FILE="${CACHE_DIR}/${SID}"
 mkdir -p "$CACHE_DIR"
+chmod 700 "$CACHE_DIR" 2>/dev/null || true
 if [ -f "$CACHE_FILE" ] && [ "$(cat "$CACHE_FILE")" = "$CTX" ]; then
   exit 0
 fi

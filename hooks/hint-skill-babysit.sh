@@ -23,6 +23,7 @@ SKILL_CACHE="$SKILL_CACHE_DIR/$SID"
 HINT_CACHE="$HINT_CACHE_DIR/$SID"
 
 mkdir -p "$SKILL_CACHE_DIR" "$HINT_CACHE_DIR"
+chmod 700 "$SKILL_CACHE_DIR" "$HINT_CACHE_DIR" 2>/dev/null || true
 reset_on_compact "$SID" "$SKILL_CACHE_DIR" "$SKILL_CACHE"
 reset_on_compact "$SID" "$HINT_CACHE_DIR" "$HINT_CACHE"
 

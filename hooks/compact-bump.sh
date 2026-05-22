@@ -12,6 +12,7 @@ set -euo pipefail
 
 DIR=/tmp/claude-${UID}-state/compact-events
 mkdir -p "$DIR"
+chmod 700 "$DIR" 2>/dev/null || true
 
 input=$(cat)
 SID=$(jq -r '.session_id // empty' <<< "$input")
