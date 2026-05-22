@@ -101,7 +101,8 @@ if (Test-Path $TARGET) {
 # ---------------------------------------------------------------------------
 
 # Root files (skip Linux-only shell scripts and fish files)
-$rootFiles = @("settings.json", "CLAUDE.md", "bypass.md", "breakdown.md", "examples.md")
+$rootFiles = @("settings.json", "CLAUDE.md", "bypass.md", "breakdown.md", "examples.md",
+               "integration.ps1", "integration-providers.ps1", "integration-install.ps1")
 foreach ($f in $rootFiles) {
     $src = "$REPO\$f"
     if (Test-Path $src) {
